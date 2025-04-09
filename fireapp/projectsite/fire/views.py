@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from django.views.generic.list import ListView, CreateView
-from fire.models import Locations, Incident
+from django.views.generic import ListView, CreateView
+from fire.models import Locations, Incident, FireStation
 
 from django.db import connection
 from django.http import JsonResponse
@@ -171,3 +171,36 @@ def multipleBarbySeverity(request):
         result[level] = dict(sorted(result[level].items()))
 
     return JsonResponse(result)
+
+def map_station(request):
+     fireStations = FireStation.objects.values('name', 'latitude', 'longitude')
+
+     for fs in fireStations:
+         fs['latitude'] = float(fs['latitude'])
+         fs['longitude'] = float(fs['longitude'])
+
+     fireStations_list = list(fireStations)
+
+     context = {
+         'fireStations': fireStations_list,
+     }
+
+     return render(request, 'map_station.html', context)
+ 
+def fire_incident_map(request):
+    fireIncidents = Locations.objects.values('name', 'latitude', 'longitude')
+
+    for fs in fireIncidents:
+        fs['latitude'] = float(fs['latitude'])
+        fs['longitude'] = float(fs['longitude'])
+
+    fireIncidents_list = list(fireIncidents)  # Corrected variable name
+
+    context = {
+        'fireIncidents': fireIncidents_list,  # Corrected variable name
+    }
+
+    return render(request, 'fire_incident_map.html', context)
+
+
+
