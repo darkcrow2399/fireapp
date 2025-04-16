@@ -17,6 +17,9 @@
         <label for="city-filter">Filter by City:</label>
         <select id="city-filter">
             <option value="">All Cities</option>
+            {% for city_name in palawan_cities %}
+                <option value="{{ city_name }}">{{ city_name }}</option>
+            {% endfor %}
         </select>
     </div>
 
@@ -24,43 +27,65 @@
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        var map = L.map('mapid').setView([9.7408, 118.7354], 13);
-    
+        var map = L.map('mapid').setView([9.7408, 118.7354], 9); // Adjust zoom to fit Palawan
+
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
         }).addTo(map);
-    
-        // Define a custom icon for fire incidents
+
         var fireIcon = L.icon({
-            iconUrl: '/static/img/fire.png', // Adjust the path to your image
-            iconSize: [32, 37], // Size of the icon
-            iconAnchor: [16, 37], // Point of the icon which will correspond to marker's location
-            popupAnchor: [0, -30] // Point from which the popup should open relative to the iconAnchor
+            iconUrl: '/static/img/fire.png',
+            iconSize: [32, 37],
+            iconAnchor: [16, 37],
+            popupAnchor: [0, -30]
         });
-    
+
         var allIncidents = {{ fireIncidents|safe }};
-    
-        allIncidents.forEach(incident => {
-            if (incident.latitude !== null && incident.longitude !== null) {
-                var marker = L.marker([incident.latitude, incident.longitude], { icon: fireIcon }) // Use the custom icon
-                    .bindPopup(`<b>${incident.severity_level} Fire</b><br>Location: ${incident.name}<br>City: ${incident.city}, ${incident.country}<br>Occurred at: ${new Date(incident.date_time).toLocaleString()}<br>Description: ${incident.description}`);
-                marker.addTo(map);
+        var incidentMarkers = [];
+
+        function filterIncidentsByCity(selectedCity) {
+            incidentMarkers.forEach(marker => map.removeLayer(marker));
+            incidentMarkers = [];
+
+            var filteredIncidents = [];
+            if (selectedCity === "") {
+                filteredIncidents = allIncidents;
             } else {
-                console.warn("Incident has missing coordinates:", incident);
+                filteredIncidents = allIncidents.filter(incident => incident.city === selectedCity);
             }
-        });
-    
-        // Optional: Fit the map bounds
-        if (allIncidents.length > 0) {
-            var bounds = new L.LatLngBounds();
-            allIncidents.forEach(incident => {
+
+            filteredIncidents.forEach(incident => {
                 if (incident.latitude !== null && incident.longitude !== null) {
-                    bounds.extend([incident.latitude, incident.longitude]);
+                    var marker = L.marker([incident.latitude, incident.longitude], { icon: fireIcon })
+                        .bindPopup(`<b>${incident.severity_level} Fire</b><br>Location: ${incident.name}<br>City: ${incident.city}, ${incident.country}<br>Occurred at: ${new Date(incident.date_time).toLocaleString()}<br>Description: ${incident.description}`);
+                    marker.addTo(map);
+                    incidentMarkers.push(marker);
                 }
             });
-            map.fitBounds(bounds);
+
+            if (filteredIncidents.length > 0) {
+                var bounds = new L.LatLngBounds();
+                filteredIncidents.forEach(incident => {
+                    if (incident.latitude !== null && incident.longitude !== null) {
+                        bounds.extend([incident.latitude, incident.longitude]);
+                    }
+                });
+                map.fitBounds(bounds);
+            } else if (selectedCity !== "") {
+                map.setView([9.7408, 118.7354], 9); // Reset to Palawan view
+            }
         }
+
+        var cityFilter = document.getElementById('city-filter');
+
+        cityFilter.addEventListener('change', function() {
+            var selectedCity = this.value;
+            filterIncidentsByCity(selectedCity);
+        });
+
+        // Initial load (show all Palawan incidents)
+        filterIncidentsByCity("");
     </script>
-</body>
-</html>
 {% endblock %}
+</body>
+    </html>

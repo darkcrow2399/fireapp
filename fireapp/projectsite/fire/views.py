@@ -197,7 +197,7 @@ def map_station(request):
      return render(request, 'map_station.html', context)
  
 def fire_incident_map(request):
-    fire_incidents = Incident.objects.select_related('location').filter(location__city='Puerto Princesa City')  # Initially filter for Puerto Princesa
+    fire_incidents = Incident.objects.select_related('location').filter(location__country__iexact='Philippines').all() # Fetch all Philippine incidents
     incident_data = []
     for incident in fire_incidents:
         incident_data.append({
@@ -211,10 +211,15 @@ def fire_incident_map(request):
             'country': incident.location.country,
         })
 
+    # Fetch unique cities from ALL Philippine incidents for the filter
+    palawan_cities = Incident.objects.filter(location__country__iexact='Philippines').values_list('location__city', flat=True).distinct().order_by('location__city')
+
     context = {
         'fireIncidents': incident_data,
+        'palawan_cities': list(palawan_cities),
     }
     return render(request, 'fire_incident_map.html', context)
+
 
 
 
