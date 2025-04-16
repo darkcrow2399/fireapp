@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path
+from fire import views
 
 from fire.views import HomePageView, ChartView, PieCountbySeverity, LineCountbyMonth, MultilineIncidentTop3Country, multipleBarbySeverity, map_station, fire_incident_map
 from fire.views import firestationListView, firestationCreateView, firestationUpdateView, firestationDeleteView
