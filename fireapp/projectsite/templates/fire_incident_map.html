@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fire Incidents Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #mapid { height: 500px; }
+    </style>
+</head>
+<body>
+    {% extends 'base.html' %}  {# Assuming your base template is named 'base.html' #}
+
+    {% block content %}
+    <h1>Fire Incidents Map</h1>
+
+    <div>
+        <label for="city-filter">Filter by City:</label>
+        <select id="city-filter">
+            <option value="">All Cities</option>
+        </select>
+    </div>
+
+    <div id="mapid"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('mapid').setView([9.7408, 118.7354], 13); // Center on Puerto Princesa City
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        var cityFilter = document.getElementById('city-filter');
+        var allIncidents =  fireIncidents|safe ; // Get the fire incident data
+
+        var incidentMarkers = [];
+
+        function updateMap(city) {
+            incidentMarkers.forEach(marker => map.removeLayer(marker));
+            incidentMarkers = [];
+
+            var filteredIncidents = city
+                ? allIncidents.filter(incident => incident.city === city)
+                : allIncidents;
+
+            filteredIncidents.forEach(incident => {
+                if (incident.latitude !== null && incident.longitude !== null) {
+                    var marker = L.marker([incident.latitude, incident.longitude])
+                        .bindPopup(`<b>${incident.severity_level} Fire</b><br>Location: ${incident.name}<br>City: ${incident.city}, ${incident.country}<br>Occurred at: ${new Date(incident.date_time).toLocaleString()}<br>Description: ${incident.description}`);
+                    marker.addTo(map);
+                    incidentMarkers.push(marker);
+                }
+            });
+
+            // ... (rest of your updateMap function for adjusting bounds if needed)
+        }
+
+        // Populate city filter options with all available cities from incidents
+        var cities = [...new Set(allIncidents.map(incident => incident.city))].sort();
+        cities.forEach(city => {
+            var option = document.createElement('option');
+            option.value = city;
+            option.textContent = city;
+            cityFilter.appendChild(option);
+        });
+
+        updateMap(''); // Initial load with Puerto Princesa incidents
+
+        cityFilter.addEventListener('change', function() {
+            updateMap(this.value);
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

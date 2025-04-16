@@ -5,6 +5,8 @@ from fire.models import Locations, Incident, FireStation, WeatherConditions, Fir
 from fire.forms import Loc_Form, Incident_Form, FireStationzForm, Weather_condition, Firetruckform, FirefightersForm
 from django.db.models.query import QuerySet
 from django.db.models import Q
+from .models import Incident
+
 
 
 from django.views.generic.list import ListView
@@ -195,19 +197,26 @@ def map_station(request):
      return render(request, 'map_station.html', context)
  
 def fire_incident_map(request):
-    fireIncidents = Locations.objects.values('name', 'latitude', 'longitude')
-
-    for fs in fireIncidents:
-        fs['latitude'] = float(fs['latitude'])
-        fs['longitude'] = float(fs['longitude'])
-
-    fireIncidents_list = list(fireIncidents)  # Corrected variable name
+    fire_incidents = Incident.objects.select_related('location').filter(location__city='Puerto Princesa City')  # Initially filter for Puerto Princesa
+    incident_data = []
+    for incident in fire_incidents:
+        incident_data.append({
+            'name': incident.location.name,
+            'latitude': float(incident.location.latitude) if incident.location.latitude else None,
+            'longitude': float(incident.location.longitude) if incident.location.longitude else None,
+            'severity_level': incident.severity_level,
+            'description': incident.description,
+            'date_time': incident.date_time.isoformat() if incident.date_time else None,
+            'city': incident.location.city,
+            'country': incident.location.country,
+        })
 
     context = {
-        'fireIncidents': fireIncidents_list,  # Corrected variable name
+        'fireIncidents': incident_data,
     }
-
     return render(request, 'fire_incident_map.html', context)
+
+
 
 def firestation_list(request):
     firestations = FireStation.objects.all()
