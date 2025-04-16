@@ -24,51 +24,42 @@
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        var map = L.map('mapid').setView([9.7408, 118.7354], 13); // Center on Puerto Princesa City
-
+        var map = L.map('mapid').setView([9.7408, 118.7354], 13);
+    
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
         }).addTo(map);
-
-        var cityFilter = document.getElementById('city-filter');
-        var allIncidents =  fireIncidents|safe ; // Get the fire incident data
-
-        var incidentMarkers = [];
-
-        function updateMap(city) {
-            incidentMarkers.forEach(marker => map.removeLayer(marker));
-            incidentMarkers = [];
-
-            var filteredIncidents = city
-                ? allIncidents.filter(incident => incident.city === city)
-                : allIncidents;
-
-            filteredIncidents.forEach(incident => {
+    
+        // Define a custom icon for fire incidents
+        var fireIcon = L.icon({
+            iconUrl: '/static/img/fire.png', // Adjust the path to your image
+            iconSize: [32, 37], // Size of the icon
+            iconAnchor: [16, 37], // Point of the icon which will correspond to marker's location
+            popupAnchor: [0, -30] // Point from which the popup should open relative to the iconAnchor
+        });
+    
+        var allIncidents = {{ fireIncidents|safe }};
+    
+        allIncidents.forEach(incident => {
+            if (incident.latitude !== null && incident.longitude !== null) {
+                var marker = L.marker([incident.latitude, incident.longitude], { icon: fireIcon }) // Use the custom icon
+                    .bindPopup(`<b>${incident.severity_level} Fire</b><br>Location: ${incident.name}<br>City: ${incident.city}, ${incident.country}<br>Occurred at: ${new Date(incident.date_time).toLocaleString()}<br>Description: ${incident.description}`);
+                marker.addTo(map);
+            } else {
+                console.warn("Incident has missing coordinates:", incident);
+            }
+        });
+    
+        // Optional: Fit the map bounds
+        if (allIncidents.length > 0) {
+            var bounds = new L.LatLngBounds();
+            allIncidents.forEach(incident => {
                 if (incident.latitude !== null && incident.longitude !== null) {
-                    var marker = L.marker([incident.latitude, incident.longitude])
-                        .bindPopup(`<b>${incident.severity_level} Fire</b><br>Location: ${incident.name}<br>City: ${incident.city}, ${incident.country}<br>Occurred at: ${new Date(incident.date_time).toLocaleString()}<br>Description: ${incident.description}`);
-                    marker.addTo(map);
-                    incidentMarkers.push(marker);
+                    bounds.extend([incident.latitude, incident.longitude]);
                 }
             });
-
-            // ... (rest of your updateMap function for adjusting bounds if needed)
+            map.fitBounds(bounds);
         }
-
-        // Populate city filter options with all available cities from incidents
-        var cities = [...new Set(allIncidents.map(incident => incident.city))].sort();
-        cities.forEach(city => {
-            var option = document.createElement('option');
-            option.value = city;
-            option.textContent = city;
-            cityFilter.appendChild(option);
-        });
-
-        updateMap(''); // Initial load with Puerto Princesa incidents
-
-        cityFilter.addEventListener('change', function() {
-            updateMap(this.value);
-        });
     </script>
 </body>
 </html>
