@@ -5,7 +5,8 @@ from fire.models import Locations, Incident, FireStation, WeatherConditions, Fir
 from fire.forms import Loc_Form, Incident_Form, FireStationzForm, Weather_condition, Firetruckform, FirefightersForm
 from django.db.models.query import QuerySet
 from django.db.models import Q
-from .models import Incident
+from .models import Incident, FireStation
+
 
 
 
@@ -225,15 +226,14 @@ def fire_incident_map(request):
 
 def firestation_list(request):
     firestations = FireStation.objects.all()
-    return render(request, 'stationlist.html', {'object_list': firestations})
-
+    return render(request, 'fire/firestation_list.html', {'firestations': firestations})
 
 
 class firestationListView(ListView):
     model = FireStation
-    template_name = 'station_list.html'
-    context_object_name = 'object_list'
-    paginate_by = 10
+    template_name = 'firestation_list.html'
+    context_object_name = 'Firestations'
+    paginate_by = 25
 
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
@@ -250,18 +250,18 @@ class firestationListView(ListView):
 class firestationCreateView(CreateView):
     model = FireStation
     form_class = FireStationzForm
-    template_name= 'station_add.html'
+    template_name= 'firestation_form.html'
     success_url = reverse_lazy('station-list')
     
 class firestationUpdateView(UpdateView):
     model = FireStation
     form_class = FireStationzForm
-    template_name= 'station_edit.html'
+    template_name= 'firestation_form.html'
     success_url = reverse_lazy('station-list')
     
 class firestationDeleteView(DeleteView):
     model = FireStation
-    template_name= 'station_del.html'
+    template_name= 'firestation_confirm_delete.html'
     success_url = reverse_lazy('station-list')
     
 
@@ -293,7 +293,7 @@ class IncidentCreateView(CreateView):
 class IncidentUpdateView(UpdateView):
     model = Incident
     form_class =  Incident_Form
-    template_name= 'incident_edit.html'
+    template_name= 'incident_add.html'
     success_url = reverse_lazy('incident-list')
     
 class IncidentDeleteView(DeleteView):

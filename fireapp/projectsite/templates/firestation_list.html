@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Firestation List</h1>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <a href="{% url 'firestation-add' %}" class="btn btn-primary">Add Firestation</a>
+        </div>
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Coordinates</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for firestation in Firestations %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ firestation.name }}</td>
+                        <td>{{ firestation.address }}, {{ firestation.city }}, {{ firestation.country }}</td>
+                        <td>{{ firestation.latitude }}, {{ firestation.longitude }}</td>
+                        <td>
+                            <a href="{% url 'firestation-update' firestation.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{% url 'firestation-delete' firestation.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">No firestations available.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

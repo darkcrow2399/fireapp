@@ -30,7 +30,7 @@ urlpatterns = [
 
     path('incident_list/',  IncidentListView.as_view(), name='incident-list'),
     path('incident_list/add', IncidentCreateView.as_view(), name='incident-add'),
-    path('incident_list/<pk>', IncidentUpdateView.as_view(), name='incident-update'),
+    path('incident_list/<pk>/edit', IncidentUpdateView.as_view(), name='incident-update'),
     path('incident_list/<pk>/delete/', IncidentDeleteView.as_view(), name='incident-delete'),
     
     path('location_list/',  LocationListView.as_view(), name='loc-list'),
