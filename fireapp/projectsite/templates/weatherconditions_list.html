@@ -5,10 +5,10 @@
     <h1>Weather Conditions List</h1>
     
     {# Optional: Add a search form if needed, similar to loc_list.html #}
-    {# <form method="get" class="form-inline mb-3">
+    <form method="get" class="form-inline mb-3">
         <input type="text" name="q" class="form-control mr-2" placeholder="Search conditions..." value="{{ request.GET.q }}">
         <button type="submit" class="btn btn-primary">Search</button>
-    </form> #}
+    </form> 
     
     {# Optional: Add a link to create a new weather condition if applicable #}
     <a href="{% url 'condition-add' %}" class="btn btn-success mb-3">Add New Weather Condition</a>
@@ -31,9 +31,7 @@
                 <td>{{ condition.weather_description|default:"N/A" }}</td>
                 <td>{{ condition.temperature|default:"N/A" }}</td>
                 <td>{{ condition.created_at|date:"Y-m-d H:i"|default:"N/A" }}</td>
-                {# Add other relevant data cells for your WeatherConditions model #}
                 <td>
-                    {# Add links for edit/delete if applicable #}
                     <a href="{% url 'condition-update' condition.pk %}" class="btn btn-warning btn-sm mr-1">Edit</a>
                     <a href="{% url 'condition-delete' condition.pk %}" class="btn btn-danger btn-sm">Delete</a>
 
