@@ -24,7 +24,13 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='firefighters',
             name='station',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='firefighters', to='fire.firestation'),
+            field=models.ForeignKey(
+                null=True,  # Allow NULL values
+                blank=True, # Usually goes with null=True for consistency with forms/admin
+                on_delete=django.db.models.deletion.SET_NULL, # If station is deleted, set firefighter's station to NULL
+                related_name='firefighters',
+                to='fire.firestation'
+            ),
         ),
         migrations.AlterField(
             model_name='firetruck',

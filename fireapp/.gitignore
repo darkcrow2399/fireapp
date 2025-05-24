@@ -1,1 +1,10 @@
-**.DS_STORE
+# Python bytecode
+__pycache__/
+*.pyc
+
+# SQLite database
+*.sqlite3
+
+# Other common Python ignores
+.env
+venv/
