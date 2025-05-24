@@ -247,6 +247,24 @@
           {% endblock %}
      
           </div>
+          <!-- Toast Notification Container -->
+          <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 1rem; right: 1rem; z-index: 1055; min-width: 300px;">
+            <div id="toast-container" style="position: absolute; top: 0; right: 0;">
+                {# --- TEMPORARY DEBUGGING --- #}
+                {% if messages %}
+                    <p style="background-color: yellow; color: black; padding: 10px; border: 1px solid red;">
+                        DEBUG: Messages are present!<br>
+                    {% for message in messages %}
+                        Tag: {{ message.tags }} - Message: {{ message }}<br>
+                    {% endfor %}
+                    </p>
+                {% endif %}
+                {# --- END TEMPORARY DEBUGGING --- #}
+                {# Your original toast loop would go here once debugging is done #}
+            </div>
+        </div>
+        <!-- End Toast Notification Container -->
+
         </div>
       </div>
     </div>
@@ -272,5 +290,12 @@
     {% block chart %}
 
     {% endblock %}
+
+    <script>
+      $(document).ready(function(){
+        $('#toast-container .toast').toast('show');
+      });
+    </script>
+
   </body>
 </html>
