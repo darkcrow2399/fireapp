@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Weather Conditions List</h1>
+    
+    {# Optional: Add a search form if needed, similar to loc_list.html #}
+    {# <form method="get" class="form-inline mb-3">
+        <input type="text" name="q" class="form-control mr-2" placeholder="Search conditions..." value="{{ request.GET.q }}">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form> #}
+    
+    {# Optional: Add a link to create a new weather condition if applicable #}
+    <a href="{% url 'condition-add' %}" class="btn btn-success mb-3">Add New Weather Condition</a>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>#</th>
+                <th>Description</th>
+                <th>Temperature</th>
+                <th>Recorded At</th>
+                {# Add other relevant headers for your WeatherConditions model #}
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for condition in object_list %} {# Or 'weatherconditions_list' depending on your view's context_object_name #}
+            <tr>
+                <td>{{ forloop.counter0|add:page_obj.start_index }}</td> {# Better for paginated lists #}
+                <td>{{ condition.weather_description|default:"N/A" }}</td>
+                <td>{{ condition.temperature|default:"N/A" }}</td>
+                <td>{{ condition.created_at|date:"Y-m-d H:i"|default:"N/A" }}</td>
+                {# Add other relevant data cells for your WeatherConditions model #}
+                <td>
+                    {# Add links for edit/delete if applicable #}
+                    <a href="{% url 'condition-update' condition.pk %}" class="btn btn-warning btn-sm mr-1">Edit</a>
+                    <a href="{% url 'condition-delete' condition.pk %}" class="btn btn-danger btn-sm">Delete</a>
+
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="5">No weather conditions found.</td> {# Adjust colspan based on number of columns #}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if is_paginated %}
+        <nav>
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
+                    </li>
+                {% endif %}
+                <li class="page-item disabled">
+                    <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                </li>
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+</div>
+{% endblock %}

@@ -35,13 +35,13 @@ urlpatterns = [
     
     path('location_list/',  LocationListView.as_view(), name='loc-list'),
     path('location_list/add', LocationCreateView.as_view(), name='location-add'),
-    path('location_list/<pk>', LocationUpdateView.as_view(), name='location-update'),
+    path('location_list/<pk>', LocationUpdateView.as_view(), name='location-edit'),
     path('location_list/<pk>/delete/', LocationDeleteView.as_view(), name='location-delete'),
     
     path('condition_list/',  ConditionListView.as_view(), name='weather-list'),
     path('condition_list/add', ConditionCreateView.as_view(), name='condition-add'),
-    path('condition_list/<pk>', ConditionUpdateView.as_view(), name='condition-update'),
-    path('condition_list/<pk>/delete/', ConditionDeleteView.as_view(), name='condition-delete'),
+    path('condition_list/<int:pk>/', ConditionUpdateView.as_view(), name='condition-update'),
+    path('condition_list/<int:pk>/delete/', ConditionDeleteView.as_view(), name='condition-delete'),
     
     
     path('firetruck_list/',  FiretruckListView.as_view(), name='fireTruck-list'),

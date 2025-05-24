@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Firetrucks List</h1>
+    
+    {# Optional: Add a search form if needed #}
+    {# <form method="get" class="form-inline mb-3">
+        <input type="text" name="q" class="form-control mr-sm-2" placeholder="Search firetrucks..." value="{{ request.GET.q|default_if_none:'' }}">
+        <button type="submit" class="btn btn-outline-primary my-2 my-sm-0">Search</button>
+    </form> #}
+    
+    {# Link to add a new firetruck - update 'firetruck-add' to your actual URL name #}
+    <a href="{% url 'firetruck-add' %}" class="btn btn-success mb-3">Add New Firetruck</a>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>#</th>
+                <th>Truck ID/Number</th>
+                <th>Model</th>
+                <th>Capacity (Liters)</th>
+                <th>Station</th>
+                {# Add other relevant headers for your Firetruck model #}
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for truck in object_list %} {# 'object_list' is the default context name for ListView #}
+            <tr>
+                <td>{{ forloop.counter0|add:page_obj.start_index }}</td>
+                <td>{{ truck.truck_number|default:"N/A" }}</td> {# Example field: truck.truck_number #}
+                <td>{{ truck.model_name|default:"N/A" }}</td>   {# Example field: truck.model_name #}
+                <td>{{ truck.capacity|default:"N/A" }}</td>    {# Example field: truck.capacity #}
+                <td>{{ truck.station.name|default:"N/A" }}</td> {# Example: if station is a ForeignKey #}
+                {# Add other relevant data cells for your Firetruck model #}
+                <td>
+                    {# Update 'firetruck-edit' and 'firetruck-delete' to your actual URL names #}
+                    <a href="{% url 'firetruck-update' truck.pk %}" class="btn btn-warning btn-sm mr-1">Edit</a>
+                    <a href="{% url 'firetruck-delete' truck.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="6">No firetrucks found.</td> {# Adjust colspan to match the number of columns #}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if is_paginated %}
+        <nav>
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
+                    </li>
+                {% endif %}
+                <li class="page-item disabled">
+                    <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                </li>
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+</div>
+{% endblock %}

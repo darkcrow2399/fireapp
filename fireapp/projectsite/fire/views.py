@@ -6,6 +6,7 @@ from fire.forms import Loc_Form, Incident_Form, FireStationzForm, Weather_condit
 from django.db.models.query import QuerySet
 from django.db.models import Q
 from .models import Incident, FireStation
+from django import forms
 
 
 
@@ -318,28 +319,32 @@ class LocationListView(ListView):
                 Q(country__icontains=query)
             )
         return qs
+class Loc_Form(forms.ModelForm):
+    class Meta:
+        model = Locations
+        fields = ['name', 'address', 'city', 'country', 'latitude', 'longitude']
     
 class LocationCreateView(CreateView):
     model = Locations
     form_class = Loc_Form
-    template_name= 'loc_add.html'
+    template_name= 'location_form.html'
     success_url = reverse_lazy('loc-list')
     
 class LocationUpdateView(UpdateView):
     model = Locations
     form_class = Loc_Form
-    template_name= 'loc_edit.html'
+    template_name= 'locatiom_form.html'
     success_url = reverse_lazy('loc-list')
     
 class LocationDeleteView(DeleteView):
     model = Locations
-    template_name= 'loc_del.html'
+    template_name= 'location_confirm_delete.html'
     success_url = reverse_lazy('loc-list')
 
 class ConditionListView(ListView):
     model = WeatherConditions
     context_object_name = 'object_list'
-    template_name = 'weather_list.html'
+    template_name = 'weatherconditions_list.html'
     paginate_by = 10
 
     def get_queryset(self, *args, **kwargs):

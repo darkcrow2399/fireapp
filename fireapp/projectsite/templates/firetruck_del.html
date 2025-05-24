@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Delete Firetruck</h2>
+    <hr>
+    <p>Are you sure you want to delete the firetruck:</p>
+    <ul>
+        <li><strong>Truck Number:</strong> {{ object.truck_number|default:"N/A" }}</li> {# Example field #}
+        <li><strong>Model:</strong> {{ object.model_name|default:"N/A" }}</li>       {# Example field #}
+        <li><strong>Capacity:</strong> {{ object.capacity|default:"N/A" }} Liters</li> {# Example field #}
+        {% if object.station %}
+        <li><strong>Station:</strong> {{ object.station.name|default:"N/A" }}</li>   {# Example field #}
+        {% endif %}
+    </ul>
+    
+    <form method="post" class="mt-3">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+        <a href="{% url 'fireTruck-list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

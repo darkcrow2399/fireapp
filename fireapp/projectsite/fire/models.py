@@ -32,7 +32,7 @@ class Incident(BaseModel):
     location = models.ForeignKey(Locations, on_delete=models.CASCADE)
     date_time = models.DateTimeField(blank=True, null=True)
     severity_level = models.CharField(max_length=45, choices=SEVERITY_CHOICES)
-    description = models.CharField(max_length=250)
+    description = models.CharField(max_length=250) 
 
     def __str__(self):
         return f"{self.severity_level} at {self.location.name} ({self.date_time})"
