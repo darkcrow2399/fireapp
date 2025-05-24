@@ -22,17 +22,6 @@ class Migration(migrations.Migration):
             field=models.CharField(choices=[('Probationary Firefighter', 'Probationary Firefighter'), ('Firefighter I', 'Firefighter I'), ('Firefighter II', 'Firefighter II'), ('Firefighter III', 'Firefighter III'), ('Driver', 'Driver'), ('Captain', 'Captain'), ('Battalion Chief', 'Battalion Chief')], max_length=150),
         ),
         migrations.AlterField(
-            model_name='firefighters',
-            name='station',
-            field=models.ForeignKey(
-                null=True,  # Allow NULL values
-                blank=True, # Usually goes with null=True for consistency with forms/admin
-                on_delete=django.db.models.deletion.SET_NULL, # If station is deleted, set firefighter's station to NULL
-                related_name='firefighters',
-                to='fire.firestation'
-            ),
-        ),
-        migrations.AlterField(
             model_name='firetruck',
             name='station',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='fire_trucks', to='fire.firestation'),
@@ -47,4 +36,34 @@ class Migration(migrations.Migration):
             name='incident',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='weather_conditions', to='fire.incident'),
         ),
+        # The following operations for Firefighters.station are commented out
+        # because the field is a CharField in 0001_initial,
+        # and the current models.py also defines it as a CharField.
+        # The intermediate ForeignKey state in this migration (0002) and its reversal
+        # in 0003 caused persistent errors.
+        # # Step 1: Rename the existing 'station' CharField from 0001_initial.py
+        # migrations.RenameField(
+        #     model_name='firefighters',
+        #     old_name='station',
+        #     new_name='station_old_char',
+        # ),
+        # # Step 2: Add the new 'station' field as a ForeignKey.
+        # # This will create a new 'station_id' column, populated with NULL for existing rows.
+        # migrations.AddField(
+        #     model_name='firefighters',
+        #     name='station',
+        #     field=models.ForeignKey(
+        #         blank=True, # For forms/admin
+        #         null=True,  # For the database
+        #         on_delete=django.db.models.deletion.SET_NULL,
+        #         related_name='firefighters',
+        #         to='fire.firestation'
+        #     ),
+        #     preserve_default=False, # Ensures database NULL is used for existing rows
+        # ),
+        # # Step 3: Remove the old CharField (now renamed to station_old_char)
+        # migrations.RemoveField(
+        #     model_name='firefighters',
+        #     name='station_old_char',
+        # ),
     ]

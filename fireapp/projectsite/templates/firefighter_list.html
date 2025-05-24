@@ -36,8 +36,8 @@
                 {# Add other relevant data cells for your Firefighter model #}
                 <td>
                     {# Update 'firefighter-edit' and 'firefighter-delete' to your actual URL names #}
-                    <a href="{% url 'firefighter-update' firefighter.pk %}" class="btn btn-warning btn-sm mr-1">Edit</a>
-                    <a href="{% url 'firefighter-delete' firefighter.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                    <a href="{% url 'firefighters-update' firefighter.pk %}" class="btn btn-warning btn-sm mr-1">Edit</a>
+                    <a href="{% url 'firefighters-delete' firefighter.pk %}" class="btn btn-danger btn-sm">Delete</a> {# Assuming 'firefighters-delete' is correct #}
                 </td>
             </tr>
         {% empty %}

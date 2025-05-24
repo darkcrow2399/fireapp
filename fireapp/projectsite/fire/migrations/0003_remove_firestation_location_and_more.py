@@ -20,11 +20,14 @@ class Migration(migrations.Migration):
             name='experience_level',
             field=models.CharField(max_length=150),
         ),
-        migrations.AlterField(
-            model_name='firefighters',
-            name='station',
-            field=models.CharField(blank=True, choices=[('Probationary Firefighter', 'Probationary Firefighter'), ('Firefighter I', 'Firefighter I'), ('Firefighter II', 'Firefighter II'), ('Firefighter III', 'Firefighter III'), ('Driver', 'Driver'), ('Captain', 'Captain'), ('Battalion Chief', 'Battalion Chief')], max_length=45, null=True),
-        ),
+        # The following AlterField for Firefighters.station is commented out
+        # as the field should remain a CharField as defined in 0001_initial.py
+        # and per the modifications in 0002_firestation_location_and_more.py.
+        # migrations.AlterField(
+        #     model_name='firefighters',
+        #     name='station',
+        #     field=models.CharField(blank=True, choices=[('Probationary Firefighter', 'Probationary Firefighter'), ('Firefighter I', 'Firefighter I'), ('Firefighter II', 'Firefighter II'), ('Firefighter III', 'Firefighter III'), ('Driver', 'Driver'), ('Captain', 'Captain'), ('Battalion Chief', 'Battalion Chief')], max_length=45, null=True),
+        # ),
         migrations.AlterField(
             model_name='firetruck',
             name='station',

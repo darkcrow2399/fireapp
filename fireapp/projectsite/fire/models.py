@@ -63,11 +63,21 @@ class Firefighters(BaseModel):
         ('Captain', 'Captain'),
         ('Battalion Chief', 'Battalion Chief'),)
     name = models.CharField(max_length=150)
-    rank = models.CharField(max_length=150)
+    rank = models.CharField(
+        max_length=150,
+        choices=XP_CHOICES,
+        null=True, # Or set a default rank
+        blank=True
+    )
     experience_level = models.CharField(max_length=150)
-    station = models.CharField(
-        max_length=45, null=True, blank=True, choices=XP_CHOICES)
-    
+    station = models.ForeignKey(
+        FireStation,
+        on_delete=models.SET_NULL, # Or models.PROTECT, or models.CASCADE depending on desired behavior
+        null=True,
+        blank=True,
+        related_name='firefighters' # Optional: for easier reverse lookups from FireStation
+    )
+
     def __str__(self):
         return self.name
 
@@ -92,4 +102,3 @@ class WeatherConditions(BaseModel):
 
     def __str__(self):
         return f"Weather for Incident {self.incident.id}: {self.weather_description}"
-
