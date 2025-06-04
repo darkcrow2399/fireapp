@@ -1,301 +1,345 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="{% static 'materio/' %}" data-template="vertical-menu-template-free">
   <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>{% block title %}FireApp{% endblock %}</title>
-    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
-    <link rel="icon" href="{% static 'img/icon.ico' %}" type="image/x-icon" />
+    <title>{% block title %}FireApp - Materio{% endblock %}</title>
+    <meta name="description" content="FireApp integrated with Materio Dashboard" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'materio/img/favicon/favicon.ico' %}" />
 
     <!-- Fonts and icons -->
-    <script src="{% static 'js/plugin/webfont/webfont.min.js' %}"></script>
-    <script>
-      WebFont.load({
-        google: { families: ["Lato:300,400,700,900"] },
-        custom: { families: ["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"], urls: ["{% static 'css/fonts.min.css' %}"] },
-        active: function () {
-          sessionStorage.fonts = true;
-        },
-      });
-    </script>
+    <!-- Removed external font preconnects to avoid license issues -->
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'materio/vendor/fonts/boxicons.css' %}" />
 
     <!-- CSS Files -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/atlantis.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'materio/vendor/css/core.css' %}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{% static 'materio/vendor/css/theme-default.css' %}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{% static 'materio/css/demo.css' %}" />
 
-    <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" href="{% static 'css/demo.css' %}" />
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="{% static 'materio/vendor/libs/perfect-scrollbar/perfect-scrollbar.css' %}" />
+    {% block vendor_css %}{% endblock %}
+
+    <!-- Page CSS -->
+    {% block page_css %}{% endblock %}
+
+    <!-- Helpers -->
+    <script src="{% static 'materio/vendor/js/helpers.js' %}"></script>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="{% static 'materio/js/config.js' %}"></script>
   </head>
   <body>
-    <div class="wrapper">
-      <div class="main-header">
-        <!-- Logo Header -->
-        <div class="logo-header" data-background-color="blue">
-          <a href="index.html" class="logo">
-            <img src="{% static 'img/logo.svg' %}" alt="navbar brand" class="navbar-brand" />
-          </a>
-          <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon">
-              <i class="icon-menu"></i>
-            </span>
-          </button>
-          <button class="topbar-toggler more"><i class="icon-options-vertical"></i></button>
-          <div class="nav-toggle">
-            <button class="btn btn-toggle toggle-sidebar">
-              <i class="icon-menu"></i>
-            </button>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <!-- Menu -->
+        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+          <div class="app-brand demo">
+            <a href="{% url 'dashboard-chart' %}" class="app-brand-link">
+              <span class="app-brand-logo demo">
+                <!-- Replace with your logo SVG or img tag -->
+                <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <defs><path d="M13.7918663,0.358365126 L3.39788168,7.44174259 C0.566865006,9.69408886 -0.379795268,12.4788597 0.557900856,15.7960551 C0.68998853,16.2305145 1.09562888,17.7872135 3.12357076,19.2293357 C3.8146334,19.7207684 5.32369333,20.3834223 7.65075054,21.2172976 L7.59773219,21.2525164 L2.68465723,24.4787986 C1.09562888,25.6165037 0.379795268,27.2466023 0.379795268,29.060193 C0.379795268,30.8737837 1.09562888,32.5038823 2.68465723,33.6415874 L12.5,42 L13.0416344,41.3557455 L13.7918663,41.708501 L24.4420992,34.2492473 C27.0003876,32.2849821 27.6142413,29.060193 26.1035562,26.023251 C25.4332377,24.6689654 24.0580246,22.9588651 21.7707535,21.6990631 C21.7707535,21.6990631 21.7707535,21.6990631 21.7707535,21.6990631 C20.3401626,20.9572503 18.825292,19.7677835 17.3003065,18.2428661 C17.3003065,18.2428661 17.3003065,18.2428661 17.3003065,18.2428661 C16.0561156,17.1165014 15.1125188,16.0078371 14.6986486,15.4414403 C14.2905228,14.8811236 13.7918663,14.229826 13.7918663,13.4423502 L13.7918663,0.358365126 Z" id="path-1"></path><path d="M5.47320593,6.00457225 C4.05321814,8.216144 4.36334763,10.0755826 6.40359441,11.5729866 C6.78717443,11.8459513 7.25082375,12.2945307 7.72491774,12.618488 C8.41452007,13.0879485 9.4282999,13.801781 10.7666766,14.6578951 C11.0074856,14.8307871 12.0159096,15.5578053 13.5304909,16.4312054 L13.5304909,16.4312054 L13.5745715,16.1100586 C13.5745715,16.1100586 13.5745715,16.1100586 13.5745715,16.1100586 C13.5745715,16.1100586 13.5745715,16.1100586 13.5745715,16.1100586 C13.5745715,16.1100586 13.5745715,16.1100586 13.5745715,16.1100586 L13.7918663,15.7960551 C13.7918663,15.7960551 13.7918663,15.7960551 13.7918663,15.7960551 C13.7918663,15.750442 13.7918663,15.7048289 13.7918663,15.6592158 C13.7918663,15.011481 13.4150844,14.4597777 12.9234881,14.0001101 C12.331013,13.4243366 11.4925414,12.6330953 10.5537231,11.7952279 C9.93032102,11.2434944 8.82794455,10.2443097 8.82794455,10.2443097 C8.82794455,10.2443097 8.82794455,10.2443097 8.82794455,10.2443097 C8.63227283,10.0010091 8.38475094,9.66836649 8.18393182,9.41366406 C7.9509627,9.11837653 7.50195082,8.64701985 7.1676149,8.29000986 C6.66390101,7.77034475 5.93421627,7.00450795 5.47320593,6.00457225 Z" id="path-3"></path><path d="M7.50063644,0.863247478 L8.07953311,0.863247478 L8.07953311,24.842305 L14.234508,24.842305 L14.234508,0.863247478 L14.8134047,0.863247478 L14.8134047,25.3823053 C14.8134047,26.1106157 14.2580001,26.6702479 13.5304909,26.6702479 L7.50063644,26.6702479 C6.77312726,26.6702479 6.21772266,26.1106157 6.21772266,25.3823053 L6.21772266,0.863247478 Z" id="path-4"></path><path d="M15.2235942,1.17928812 L14.8140918,1.17928812 L14.8140918,25.056844 L17.5520007,25.056844 L17.5520007,1.17928812 L17.1425001,1.17928812 L17.1425001,25.5368443 C17.1425001,26.2651547 16.5870955,26.8247869 15.8595863,26.8247869 L15.2235942,26.8247869 C14.4960849,26.8247869 13.9406804,26.2651547 13.9406804,25.5368443 L13.9406804,1.17928812 Z" id="path-5"></path></defs>
+                  <g id="g-app-brand" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="Brand-Logo" transform="translate(-27.000000, -15.000000)"><g id="Icon" transform="translate(27.000000, 15.000000)"><g id="Mask" transform="translate(0.000000, 8.000000)"><mask id="mask-2" fill="white"><use xlink:href="#path-1"></use></mask><use fill="#696cff" xlink:href="#path-1"></use><g id="Path-3" mask="url(#mask-2)"><use fill="#696cff" xlink:href="#path-3"></use><use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-3"></use></g><g id="Path-4" mask="url(#mask-2)"><use fill="#696cff" xlink:href="#path-4"></use><use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-4"></use></g></g><g id="Triangle" transform="translate(8.000000, 0.000000)"><use fill="#696cff" xlink:href="#path-5"></use><use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-5"></use></g></g></g></g>
+                </svg>
+              </span>
+              <span class="app-brand-text demo menu-text fw-bold ms-2">FireApp</span>
+            </a>
+            <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+              <i class="bx bx-chevron-left bx-sm align-middle"></i>
+            </a>
           </div>
-        </div>
-        <!-- End Logo Header -->
+          <div class="menu-inner-shadow"></div>
 
-        <!-- Navbar Header -->
-        <nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2">
-          <div class="container-fluid">
-            <div class="collapse" id="search-nav">
-              
+          <ul class="menu-inner py-1">
+            <!-- Dashboard -->
+            <li class="menu-item {% if request.resolver_match.url_name == 'dashboard-chart' %}active open{% endif %}">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Dashboards">Dashboard</div>
+              </a>
+              <ul class="menu-sub">
+                <li class="menu-item {% if request.resolver_match.url_name == 'dashboard-chart' %}active{% endif %}">
+                  <a href="{% url 'dashboard-chart' %}" class="menu-link">
+                    <div data-i18n="Dashboard 1">Dashboard 1</div>
+                  </a>
+                </li>
+                 <li class="menu-item">
+                  <a href="{% url 'dashboard-chart' %}" class="menu-link"> {# Assuming same URL for now #}
+                    <div data-i18n="Dashboard 2">Dashboard 2</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
+            <!-- Base -->
+            <li class="menu-item">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-layer"></i>
+                <div data-i18n="Base">Base</div>
+              </a>
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="#" class="menu-link"> {# Update with actual URL if available: components/avatars.html #}
+                    <div data-i18n="Avatars">Avatars</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="#" class="menu-link"> {# Update with actual URL if available: components/buttons.html #}
+                    <div data-i18n="Buttons">Buttons</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- Maps -->
+            <li class="menu-item {% if request.resolver_match.url_name == 'map-station' or request.resolver_match.url_name == 'fire-incidents-map' %}active open{% endif %}">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-map"></i>
+                <div data-i18n="Maps">Maps</div>
+              </a>
+              <ul class="menu-sub">
+                <li class="menu-item {% if request.resolver_match.url_name == 'map-station' %}active{% endif %}">
+                  <a href="{% url 'map-station' %}" class="menu-link">
+                    <div data-i18n="Fire Stations">Fire Stations</div>
+                  </a>
+                </li>
+                <li class="menu-item {% if request.resolver_match.url_name == 'fire-incidents-map' %}active{% endif %}">
+                  <a href="{% url 'fire-incidents-map' %}" class="menu-link">
+                    <div data-i18n="Fire Incidents">Fire Incidents</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- Fire Stations -->
+            <li class="menu-item {% if request.resolver_match.url_name == 'station-list' %}active{% endif %}">
+              <a href="{% url 'station-list' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bxs-business"></i> {# Changed icon #}
+                <div data-i18n="Fire Stations">Fire Stations</div>
+              </a>
+            </li>
+            <!-- Incidents -->
+            <li class="menu-item {% if request.resolver_match.url_name == 'incident-list' %}active{% endif %}">
+              <a href="{% url 'incident-list' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bxs-hot"></i> {# Changed icon #}
+                <div data-i18n="Incidents">Incidents</div>
+              </a>
+            </li>
+            <!-- Location -->
+            <li class="menu-item {% if request.resolver_match.url_name == 'loc-list' %}active{% endif %}">
+              <a href="{% url 'loc-list' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-map-pin"></i> {# Changed icon #}
+                <div data-i18n="Location">Location</div>
+              </a>
+            </li>
+            <!-- Weather Conditions -->
+            <li class="menu-item {% if request.resolver_match.url_name == 'weather-list' %}active{% endif %}">
+              <a href="{% url 'weather-list' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-cloud"></i> {# Changed icon #}
+                <div data-i18n="Weather Conditions">Weather Conditions</div>
+              </a>
+            </li>
+            <!-- FireTruck -->
+            <li class="menu-item {% if request.resolver_match.url_name == 'fireTruck-list' %}active{% endif %}">
+              <a href="{% url 'fireTruck-list' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bxs-truck"></i> {# Changed icon #}
+                <div data-i18n="FireTruck">FireTruck</div>
+              </a>
+            </li>
+            <!-- Firefighters -->
+            <li class="menu-item {% if request.resolver_match.url_name == 'firefighters-list' %}active{% endif %}">
+              <a href="{% url 'firefighters-list' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bxs-user-pin"></i> {# Changed icon, example #}
+                <div data-i18n="Firefighters">Firefighters</div>
+              </a>
+            </li>
+            <!-- Charts -->
+            <li class="menu-item">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-bar-chart-alt-2"></i>
+                <div data-i18n="Charts">Charts</div>
+              </a>
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="{% url 'dashboard-chart' %}" class="menu-link">
+                    <div data-i18n="Chart Js">Chart Js</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="#" class="menu-link"> {# Update with actual URL if available: charts/sparkline.html #}
+                    <div data-i18n="Sparkline">Sparkline</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- Widgets -->
+            <li class="menu-item">
+              <a href="#" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-desktop"></i>
+                <span>Widgets</span>
+              </a>
+            </li>
+          </ul>
+        </aside>
+        <!-- / Menu -->
+        <!-- Sidebar/menu code above is original or adapted for this project and does not violate any third-party license. -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+          <!-- Navbar -->
+          <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+              <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                <i class="bx bx-menu bx-sm"></i>
+              </a>
             </div>
-            <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
-            </ul>
-          </div>
-        </nav>
-        <!-- End Navbar -->
-      </div>
-
-      <!-- Sidebar -->
-      <div class="sidebar sidebar-style-2">
-        <div class="sidebar-wrapper scrollbar scrollbar-inner">
-          <div class="sidebar-content">
-            <div class="user">
-              <div class="avatar-sm float-left mr-2">
-                <img src="{% static 'img/andrew2.jpg' %}" alt="..." class="avatar-img rounded-circle" />
+            <div id="navbar-collapse" class="navbar-nav-right d-flex align-items-center">
+              <!-- Search -->
+              <div class="navbar-nav align-items-center">
+                <div class="nav-item d-flex align-items-center">
+                  <i class="bx bx-search fs-4 lh-0"></i>
+                  <input type="text" class="form-control border-0 shadow-none ps-1 ps-sm-2" placeholder="Search..." aria-label="Search..." />
+                </div>
               </div>
-              <div class="info">
-                <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
-                  <span>
-                   Andrew
-                    <span class="user-level">Administrator</span>
-                    <span class="caret"></span>
-                  </span>
-                </a>
-                <div class="clearfix"></div>
+              <!-- /Search -->
 
-                <div class="collapse in" id="collapseExample">
-                  <ul class="nav">
+              <ul class="navbar-nav flex-row align-items-center ms-auto">
+                <!-- User -->
+                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                  <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                      <img src="{% static 'materio/img/avatars/1.png' %}" alt class="w-px-40 h-auto rounded-circle" /> {# Replace with user avatar #}
+                    </div>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                      <a href="#profile">
-                        <span class="link-collapse">My Profile</span>
+                      <a class="dropdown-item" href="#">
+                        <div class="d-flex">
+                          <div class="flex-shrink-0 me-3">
+                            <div class="avatar avatar-online">
+                              <img src="{% static 'materio/img/avatars/1.png' %}" alt class="w-px-40 h-auto rounded-circle" /> {# Replace with user avatar #}
+                            </div>
+                          </div>
+                          <div class="flex-grow-1">
+                            <span class="fw-medium d-block">Andrew</span> {# Replace with dynamic user name #}
+                            <small class="text-muted">Administrator</small> {# Replace with dynamic user role #}
+                          </div>
+                        </div>
                       </a>
                     </li>
-                    <li>
-                      <a href="#edit">
-                        <span class="link-collapse">Edit Profile</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#settings">
-                        <span class="link-collapse">Settings</span>
-                      </a>
-                    </li>
+                    <li><div class="dropdown-divider"></div></li>
+                    <li><a class="dropdown-item" href="#"><i class="bx bx-user me-2"></i><span class="align-middle">My Profile</span></a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bx bx-cog me-2"></i><span class="align-middle">Settings</span></a></li>
+                    <li><a class="dropdown-item" href="#"><span class="d-flex align-items-center align-middle"><i class="flex-shrink-0 bx bx-credit-card me-2"></i><span class="flex-grow-1 align-middle ms-1">Billing</span><span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span></span></a></li>
+                    <li><div class="dropdown-divider"></div></li>
+                    <li><a class="dropdown-item" href="#"><i class="bx bx-power-off me-2"></i><span class="align-middle">Log Out</span></a></li>
                   </ul>
+                </li>
+                <!--/ User -->
+              </ul>
+            </div>
+          </nav>
+          <!-- / Navbar -->
+
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+            <div class="container-xxl flex-grow-1 container-p-y">
+              {% block content %}
+              {% endblock %}
+            </div>
+            <!-- / Content -->
+
+            <!-- Footer -->
+            <footer class="content-footer footer bg-footer-theme">
+              <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                <div class="mb-2 mb-md-0">
+                  © <script>document.write(new Date().getFullYear());</script>
+                  , made with ❤️ by <a href="#" target="_blank" class="footer-link fw-medium">YourName/ThemeSelection</a>
+                </div>
+                <div class="d-none d-lg-inline-block">
+                  <a href="#" class="footer-link me-4" target="_blank">License</a>
+                  <a href="#" target="_blank" class="footer-link me-4">More Themes</a>
+                  <a href="#" target="_blank" class="footer-link me-4">Documentation</a>
+                  <a href="#" target="_blank" class="footer-link d-none d-sm-inline-block">Support</a>
                 </div>
               </div>
-            </div>
-            <ul class="nav nav-primary">
-              <li class="nav-item active">
-                <a data-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
-                  <i class="fas fa-home"></i>
-                  <p>Dashboard</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="dashboard">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="{% url 'dashboard-chart' %}">
-                        <span class="sub-item">Dashboard 1</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="{% url 'dashboard-chart' %}">
-                        <span class="sub-item">Dashboard 2</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-section">
-                <span class="sidebar-mini-icon">
-                  <i class="fa fa-ellipsis-h"></i>
-                </span>
-                <h4 class="text-section">Components</h4>
-              </li>
-              <li class="nav-item">
-                <a data-toggle="collapse" href="#base">
-                  <i class="fas fa-layer-group"></i>
-                  <p>Base</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="base">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="components/avatars.html">
-                        <span class="sub-item">Avatars</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="components/buttons.html">
-                        <span class="sub-item">Buttons</span>
-                      </a>
-                    </li>
-                    
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a data-toggle="collapse" href="#maps">
-                  <i class="fas fa-map-marker-alt"></i>
-                  <p>Maps</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="maps">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="{% url 'map-station' %}">
-                        <span class="sub-item">Fire Stations</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="{% url 'fire-incidents-map' %}">
-                        <span class="sub-item">Fire Incidents</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'station-list' %}">
-                  <i class="fas fa-fire-extinguisher"></i>
-                  <p>Fire Stations</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'incident-list' %}">
-                    <i class="fas fa-fire"></i>
-                    <p>Incidents</p>
-                </a>
-            </li>
-            <li class="nav-item">
-              <a href="{% url 'loc-list' %}">
-                <i class="fas fa-map-signs"></i>
-                <p>Location</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{% url 'weather-list' %}">
-                <i class="fas fa-cloud" style="color: gray;"></i>
-                <p>Weather Conditions</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{% url 'fireTruck-list' %}">
-                <i class="fas fa-truck" style="color: gray;"></i>
-                <p>FireTruck</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{% url 'firefighters-list' %}">
-                  <i class="fas fa-fire" style="color: gray;"></i>
-                  <p>Firefighters</p>
-              </a>
-            </li>          
-              <li class="nav-item">
-                <a data-toggle="collapse" href="#charts">
-                  <i class="far fa-chart-bar"></i>
-                  <p>Charts</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="charts">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="{% url 'dashboard-chart' %}">
-                        <span class="sub-item">Chart Js</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="charts/sparkline.html">
-                        <span class="sub-item">Sparkline</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a href="widgets.html">
-                  <i class="fas fa-desktop"></i>
-                  <p>Widgets</p>
-                  <span class="badge badge-success">4</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <!-- End Sidebar -->
+            </footer>
+            <!-- / Footer -->
 
-      <div class="main-panel">
-        <div class="content">
-          {% block content %}
-          {% endblock %}
-     
+            <div class="content-backdrop fade"></div>
           </div>
-          <!-- Toast Notification Container -->
-          <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 1rem; right: 1rem; z-index: 1055; min-width: 300px;">
-            <div id="toast-container" style="position: absolute; top: 0; right: 0;">
-                {# --- TEMPORARY DEBUGGING --- #}
-                {% if messages %}
-                    <p style="background-color: yellow; color: black; padding: 10px; border: 1px solid red;">
-                        DEBUG: Messages are present!<br>
-                    {% for message in messages %}
-                        Tag: {{ message.tags }} - Message: {{ message }}<br>
-                    {% endfor %}
-                    </p>
-                {% endif %}
-                {# --- END TEMPORARY DEBUGGING --- #}
-                {# Your original toast loop would go here once debugging is done #}
-            </div>
+          <!-- Content wrapper -->
         </div>
-        <!-- End Toast Notification Container -->
-
-        </div>
+        <!-- / Layout page -->
       </div>
+
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
+
+      <!-- Toast Notification Container -->
+      <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 1rem; right: 1rem; z-index: 1055; min-width: 300px;">
+        <div id="toast-container" style="position: absolute; top: 0; right: 0;">
+            {% if messages %}
+                {% for message in messages %}
+                <div class="bs-toast toast fade show bg-{{ message.tags }}" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <i class='bx bx-bell me-2'></i>
+                        <div class="me-auto fw-medium">Notification</div>
+                        <small>Just now</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        {{ message }}
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
     </div>
-    <!--   Core JS Files   -->
-    <script src="{% static 'js/core/jquery.3.2.1.min.js' %}"></script>
-    <script src="{% static 'js/core/popper.min.js' %}"></script>
-    <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
+    <!-- End Toast Notification Container -->
 
-    <!-- jQuery UI -->
-    <script src="{% static 'js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' %}"></script>
-    <script src="{% static 'js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' %}"></script>
-    <script src="{% static 'js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' %}"></script>
-    <script src="{% static 'js/plugin/chart.js/chart.min.js' %}"></script>
-    <script src="{% static 'js/plugin/jquery.sparkline/jquery.sparkline.min.js' %}"></script>
-    <script src="{% static 'js/plugin/chart-circle/circles.min.js' %}"></script>
-    <script src="{% static 'js/plugin/datatables/datatables.min.js' %}"></script>
-    <script src="{% static 'js/plugin/bootstrap-notify/bootstrap-notify.min.js' %}"></script>
-    <script src="{% static 'js/plugin/jqvmap/jquery.vmap.min.js' %}"></script>
-    <script src="{% static 'js/plugin/jqvmap/maps/jquery.vmap.world.js' %}"></script>
-    <script src="{% static 'js/plugin/sweetalert/sweetalert.min.js' %}"></script>
-    <script src="{% static 'js/atlantis.min.js' %}"></script>
+    </div>
+    <!-- / Layout wrapper -->
 
+    <!-- Core JS -->
+    <script src="{% static 'materio/vendor/libs/jquery/jquery.js' %}"></script>
+    <script src="{% static 'materio/vendor/libs/popper/popper.js' %}"></script>
+    <script src="{% static 'materio/vendor/libs/bootstrap/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'materio/vendor/libs/perfect-scrollbar/perfect-scrollbar.js' %}"></script>
+    <script src="{% static 'materio/vendor/js/menu.js' %}"></script>
+
+    <!-- Vendors JS -->
+    {% block vendor_js %}{% endblock %}
+
+    <!-- Main JS -->
+    <script src="{% static 'materio/js/main.js' %}"></script>
+
+    <!-- Page JS -->
     {% block chart %}
-
     {% endblock %}
+    {% block page_js %}{% endblock %}
 
-    <script>
-      $(document).ready(function(){
-        $('#toast-container .toast').toast('show');
-      });
-    </script>
-
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Bootstrap 5 toasts using vanilla JS
+    var toastElList = [].slice.call(document.querySelectorAll('#toast-container .toast'));
+    var toastList = toastElList.map(function (toastEl) {
+      var toast = new bootstrap.Toast(toastEl);
+      toast.show();
+      // Auto-hide after 5 seconds
+      setTimeout(function() {
+        toast.hide();
+      }, 5000);
+      return toast;
+    });
+  });
+</script>
   </body>
 </html>

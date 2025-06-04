@@ -10,6 +10,9 @@ from fire.views import ConditionListView, ConditionCreateView, ConditionUpdateVi
 from fire.views import FiretruckListView, FiretruckCreateView, FiretruckUpdateView, FiretruckDeleteView
 from fire.views import FirefightersListView, FirefightersCreateView, FirefightersUpdateView, FirefightersDeleteView
 
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     
@@ -56,3 +59,6 @@ urlpatterns = [
 
 
 ]
+if settings.DEBUG:
+    urlpatterns += staticfiles_urlpatterns()
+    # urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) # Usually not needed with staticfiles_urlpatterns
